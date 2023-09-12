@@ -1,0 +1,2 @@
+bin/matmul: matmul.cpp
+	g++ matmul.cpp -o bin/matmul -I /home/resiliente/cs410software/openblas_0_3_21_install/include/ -L /home/resiliente/cs410software/openblas_0_3_21_install/lib/ -lopenblas

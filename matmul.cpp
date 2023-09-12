@@ -7,6 +7,7 @@
 #include<ctime>
 #include<chrono>
 #include<immintrin.h>
+#include<cblas.h>
 
 #ifdef STACKALLOCATED
 #define INPUTSIZE 256
@@ -50,22 +51,41 @@ for(int i=0;i<n;i++)
             for(int j=0;j<n;j++)
                 C[i][j] = C[i][j] + A[i][k] * B[k][j];
 #endif
-#else
+// #else
 #ifdef PARALLEL
 #pragma omp parallel for
 #endif
-    for(int i=0;i<n;i++)
-    #ifdef LOOPINTERCHANGE
-        for(int k=0;k<n;k++)
-            for(int j=0;j<n;j++)
-    #else
-        for(int j=0;j<n;j++)
-            for(int k=0;k<n;k++)
-    #endif
-                C[i*n+j] = C[i*n+j] + A[i*n+k] * B[k*n+j];
-#endif
-    const auto end=std::chrono::steady_clock::now();
-    const std::chrono::duration<float> elapsedtime = end-start;
+    // for(int i=0;i<n;i++)
+    // #ifdef LOOPINTERCHANGE
+    //     for(int k=0;k<n;k++)
+    //         for(int j=0;j<n;j++)
+    // #else
+    //     for(int j=0;j<n;j++)
+    //         for(int k=0;k<n;k++)
+    // #endif
+    //             C[i*n+j] = C[i*n+j] + A[i*n+k] * B[k*n+j];
+// #endif
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            C[i] = C[i] + cblas_ddot(n,(double*)A,1,(double*)B,n);
 
+    const auto end=std::chrono::steady_clock::now();
+    const std::chrono::duration<double> elapsedtime = end-start;
+    double computation_cost = 2*n*n*(double)n;
+    double flops = static_cast<double>(computation_cost / elapsedtime.count());
+
+    std::cout<<"Using cblas_ddot function:"<<std::endl;
     std::cout<<"elapsed seconds:"<<elapsedtime.count()<<std::endl;
+    std::cout<<"throughput:"<<flops<<std::endl;
+
+
+    const auto start1=std::chrono::steady_clock::now();
+    cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,n,B,n,1,C,n);
+    const auto end1=std::chrono::steady_clock::now();
+    const std::chrono::duration<double> elapsedtime1 = end1-start1;
+    double flops1 = static_cast<double>(computation_cost / elapsedtime1.count());
+
+    std::cout<<"Using sgemm function:"<<std::endl;
+    std::cout<<"elapsed seconds:"<<elapsedtime1.count()<<std::endl;
+    std::cout<<"throughput:"<<flops1<<std::endl;
 }

@@ -1,0 +1,10 @@
+How to include the include folder and lib folder on a server?
+include folder contains .h files and lib contains .a files.
+
+2*1024*1024*1024 = 2147483648
+But in int the max +ve representable in c++ is 2147483647
+Hence it would give -2147483648 thus giving you negative throughput.
+
+By doing this:
+2 * ((n*n*n) / elapsedtime1.count())
+The expression was type casted to double thus staying +ve and giving correct answer.
