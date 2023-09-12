@@ -115,7 +115,7 @@ C[i * n + j] = C[i * n + j] + A[i * n + k] * B[k * n + j];
     const auto end = std::chrono::steady_clock::now();
     const std::chrono::duration<float> elapsedtime = end - start;
 
-    float throughPut = (2*n*n*n)/(float)elapsedtime.count();
+    float throughPut = (2.0*n*n*n)/(float)elapsedtime.count();
 
     std::cout << "elapsed seconds:" << elapsedtime.count() << std::endl;
     std::cout << "through put:" << throughPut << std::endl;
