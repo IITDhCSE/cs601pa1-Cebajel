@@ -7,7 +7,9 @@
 #include <ctime>
 #include <chrono>
 #include <immintrin.h>
+#ifdef BLAS
 #include<cblas.h>
+#endif
 
 #ifdef STACKALLOCATED
 #define INPUTSIZE 256
