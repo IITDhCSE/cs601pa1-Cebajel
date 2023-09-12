@@ -16,7 +16,7 @@ matvec.o: matvec.cpp
 
 timeutil.cpp: timeutil.h
 
-matmul_schedule:
+matmul_schedule: matmul.cpp
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE -o ./bin/main_ijk
 	./bin/main_ijk 32
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=1 -o ./bin/main_ikj
