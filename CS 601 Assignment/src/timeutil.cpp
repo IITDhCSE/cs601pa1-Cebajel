@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "timeutil.h"
+#include "../inc/timeutil.h"
 
 void
 get_time_now(struct timespec *ts)

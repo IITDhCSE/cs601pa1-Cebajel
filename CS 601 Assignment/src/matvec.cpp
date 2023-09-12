@@ -9,7 +9,7 @@
 #error This example requires SSE3
 #endif
 
-#include "timeutil.h"
+#include "../inc/timeutil.h"
 
 /* Size of the matrices to multiply */
 #define SIZE2 14
