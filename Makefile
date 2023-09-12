@@ -1,3 +1,5 @@
+input=2048
+
 SSE_ARCH_FLAGS=-msse3
 
 CC=g++
@@ -18,17 +20,17 @@ timeutil.cpp: timeutil.h
 
 matmul_schedule: matmul.cpp
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE -o ./bin/main_ijk
-	./bin/main_ijk 32
+	./bin/main_ijk $(input)
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=1 -o ./bin/main_ikj
-	./bin/main_ikj 32
+	./bin/main_ikj $(input)
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=2 -o ./bin/main_kij
-	./bin/main_kij 32
+	./bin/main_kij $(input)
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=3 -o ./bin/main_kji
-	./bin/main_kji 32
+	./bin/main_kji $(input)
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=4 -o ./bin/main_jik
-	./bin/main_jik 32
+	./bin/main_jik $(input)
 	$(CC) matmul.cpp -D PARALLEL -D LOOPINTERCHANGE=5 -o ./bin/main_jki
-	./bin/main_jki 32
+	./bin/main_jki $(input)
 
 
 clean:
