@@ -1,4 +1,5 @@
 SSE_ARCH_FLAGS=-msse3
+libpath=-I /home/resiliente/cs410software/openblas_0_3_21_install/include/ -L /home/resiliente/cs410software/openblas_0_3_21_install/lib/ -lopenblas
 SRC=./src
 BIN=./bin
 INC=./inc
@@ -27,56 +28,56 @@ $(BIN):
 	mkdir bin
 
 $(BIN)/matmul_ijk: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=0 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=0 -o $@ $(libpath)
 	$@ $(input)
 $(BIN)/matmul_ikj: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=1 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=1 -o $@ $(libpath)
 	$@ $(input)
 $(BIN)/matmul_kij: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=2 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=2 -o $@ $(libpath)
 	$@ $(input)
 $(BIN)/matmul_kji: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=3 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=3 -o $@ $(libpath)
 	$@ $(input)
 $(BIN)/matmul_jik: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=4 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=4 -o $@ $(libpath)
 	$@ $(input)
 $(BIN)/matmul_jki: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=5 -o $@
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=5 -o $@ $(libpath)
 	$@ $(input)
 
 # 1(b) Cebajel
 matmul_optlevel: $(BIN) $(BIN)/matmul_o0 $(BIN)/matmul_o1 $(BIN)/matmul_o2 $(BIN)/matmul_o3 $(BIN)/matmul_o4
 
 $(BIN)/matmul_o0: $(SRC)/matmul.cpp
-	$(CC) $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0
+	$(CC) $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 $(libpath)
 	$@ $(input)
 
 $(BIN)/matmul_o1: $(SRC)/matmul.cpp
-	$(CC) -O1 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0
+	$(CC) -O1 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 $(libpath)
 	$@ $(input)
 
 $(BIN)/matmul_o2: $(SRC)/matmul.cpp
-	$(CC) -O2 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0
+	$(CC) -O2 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 $(libpath)
 	$@ $(input)
 
 $(BIN)/matmul_o3: $(SRC)/matmul.cpp
-	$(CC) -O3 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0
+	$(CC) -O3 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 $(libpath)
 	$@ $(input)
 
 $(BIN)/matmul_o4: $(SRC)/matmul.cpp
-	$(CC) -O4 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0
+	$(CC) -O4 $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 $(libpath)
 	$@ $(input)
 
 # 1(c) Aditya
 matmul_blas: $(BIN) $(BIN)/matmul_a $(BIN)/matmul_b
 
 $(BIN)/matmul_a: $(SRC)/matmul.cpp
-	$(CC) $^ -o $(BIN)/matmul -I /home/resiliente/cs410software/openblas_0_3_21_install/include/ -L /home/resiliente/cs410software/openblas_0_3_21_install/lib/ -lopenblas -DBLAS=1 -D PARALLEL
+	$(CC) $^ -o $(BIN)/matmul $(libpath) -DBLAS=1 -D PARALLEL
 	$@ $(input)
 
 $(BIN)/matmul_b: $(SRC)/matmul.cpp
-	$(CC) $^ -o $(BIN)/matmul -I /home/resiliente/cs410software/openblas_0_3_21_install/include/ -L /home/resiliente/cs410software/openblas_0_3_21_install/lib/ -lopenblas -DBLAS=2 -D PARALLEL
+	$(CC) $^ -o $(BIN)/matmul $(libpath) -DBLAS=2 -D PARALLEL
 	$@ $(input)
 
 clean:
