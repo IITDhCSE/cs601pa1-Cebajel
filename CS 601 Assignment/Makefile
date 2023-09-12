@@ -73,15 +73,15 @@ $(BIN)/matmul_o4: $(SRC)/matmul.cpp
 matmul_blas: $(BIN) $(BIN)/matmul_a $(BIN)/matmul_b
 
 $(BIN)/matmul_a: $(SRC)/matmul.cpp
-	$(CC) $^ -o $(BIN)/matmul $(blaspath) -DBLAS=1 -D PARALLEL
+	$(CC) $^ $(blaspath) -DBLAS=1 -D PARALLEL  -o $@
 	$@ $(input)
 
 $(BIN)/matmul_b: $(SRC)/matmul.cpp
-	$(CC) $^ -o $(BIN)/matmul $(blaspath) -DBLAS=2 -D PARALLEL
+	$(CC) $^ $(blaspath) -DBLAS=2 -D PARALLEL -o $@
 	$@ $(input)
 
 clean:
 	$(RM) $(BIN)/*.o matvec
-	$(RM) $(OBJ)/
+	$(RM) $(OBJ)/*
 
-.PHONY: clean all
+.PHONY: clean all matmul_schedule matmul_optlevel matmul_blas
