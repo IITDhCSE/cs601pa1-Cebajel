@@ -28,7 +28,7 @@ $(BIN):
 	mkdir bin
 
 $(BIN)/matmul_ijk: $(SRC)/matmul.cpp
-	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=0 -o $@ 
+	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=0 -o $@
 	$@ $(input)
 $(BIN)/matmul_ikj: $(SRC)/matmul.cpp
 	$(CC) $^ -D PARALLEL -D LOOPINTERCHANGE=1 -o $@
