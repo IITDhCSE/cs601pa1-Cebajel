@@ -11,8 +11,7 @@ LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
 
-all: matmul_schedule matmul_optlevel matmul_blas matvec
-
+all: matmul_schedule matmul_optlevel matmul_blas matvec matvec_matmul
 
 # 1(a) Balaji
 matmul_schedule: $(BIN) $(BIN)/matmul_ijk $(BIN)/matmul_ikj $(BIN)/matmul_kij $(BIN)/matmul_kji $(BIN)/matmul_jik $(BIN)/matmul_jki
@@ -88,8 +87,19 @@ $(SRC)/timeutil.cpp: $(INC)/timeutil.h
 $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 	$(CC) -c -o $@ -I$(INC) $<
 
+# 3 Cebajel
+
+matvec_matmul: $(OBJ)/matvec_matmul
+
+$(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$@
+
+$(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
+	$(CC) -c -o $@ $(CFLAGS) -D PARALLEL -D MATMUL $<
+
 clean:
-	$(RM) $(BIN)/*.o matvec
+	$(RM) $(BIN)/*
 	$(RM) $(OBJ)/*
 
-.PHONY: clean all matmul_schedule matmul_optlevel matmul_blas
+.PHONY: clean all matmul_schedule matmul_optlevel matmul_blas matvec matvec_matmul
