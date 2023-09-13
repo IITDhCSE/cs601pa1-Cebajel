@@ -10,6 +10,7 @@ CFLAGS= -O2 $(ARCH) -g -Wall
 LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
+N=11
 
 all: matmul_schedule matmul_optlevel matmul_blas matvec matvec_matmul
 
@@ -96,7 +97,7 @@ $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
 	$@
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $(CFLAGS) -D PARALLEL -D MATMUL $<
+	$(CC) -c -o $@ $(CFLAGS) -D PARALLEL -D MATMUL -D SIZE2=$(N) $^
 
 clean:
 	$(RM) $(BIN)/*
