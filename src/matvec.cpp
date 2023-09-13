@@ -144,7 +144,7 @@ run_multiply()
 
 		double computation_cost = 2.0*SIZE*SIZE - 1.0*SIZE;
 		double flops = static_cast<double>(computation_cost / runtime_sse);
-		printf("Throughtput: %.2f flops\n", flops);
+		printf("Throughtput: %5.4e flops\n", flops);
 
         get_time_now(&ts_start);
 	matvec_ref();
@@ -153,7 +153,7 @@ run_multiply()
         printf("Matvec reference code completed in %.2f s\n",
                runtime_ref);
 
-        printf("Speedup: %5.4e\n",
+        printf("Speedup: %0.2f\n",
                runtime_ref / runtime_sse);
 
 
