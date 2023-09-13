@@ -11,11 +11,7 @@ LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
 
-
 all: matmul_schedule matmul_optlevel matmul_blas matvec
-
-# 2 Cebajel
-matvec: $(OBJ)/matvec
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -87,6 +83,9 @@ $(BIN)/matmul_a: $(SRC)/matmul.cpp
 $(BIN)/matmul_b: $(SRC)/matmul.cpp
 	$(CC) $^ $(blaspath) -DBLAS=2 -D PARALLEL -o $@
 	$@ $(input)
+
+# 2 Cebajel
+matvec: $(OBJ)/matvec
 
 clean:
 	$(RM) $(BIN)/*.o matvec
