@@ -12,7 +12,9 @@
 #include "../inc/timeutil.h"
 
 /* Size of the matrices to multiply */
+#ifndef SIZE2
 #define SIZE2 14
+#endif
 #define SIZE (1 << SIZE2)
 
 #define MINDEX(n, m) (((n) << SIZE2) | (m))
