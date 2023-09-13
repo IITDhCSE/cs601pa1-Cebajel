@@ -11,10 +11,13 @@ LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
 
+matvec: $(OBJ)/matvec
+
 all: $(OBJ)/matvec matmul_schedule matmul_optlevel matmul_blas
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$@
 
 $(BIN)/matvec.o: $(SRC)/matvec.cpp
 	$(CC) -c -o $@ $(CFLAGS) $<

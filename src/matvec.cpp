@@ -142,6 +142,10 @@ run_multiply()
         printf("Matvec using intrinsics completed in %.2f s\n",
                runtime_sse);
 
+		double computation_cost = 2.0*SIZE*SIZE;
+		double flops = static_cast<double>(computation_cost / runtime_sse);
+		printf("Throughtput: %.2f s\n", flops);
+
         get_time_now(&ts_start);
 	matvec_ref();
         get_time_now(&ts_stop);
