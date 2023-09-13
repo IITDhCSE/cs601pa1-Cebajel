@@ -133,6 +133,6 @@ for(int i=0; i<n; i++)
 
     double computation_cost = 2.0*n*n*n;
     double flops = static_cast<double>(computation_cost / elapsedtime.count());
-    std::cout << "elapsed seconds:" << elapsedtime.count() << std::endl;
-    std::cout<<"throughput:"<<flops<<std::endl;
+    std::cout << "elapsed seconds: " << elapsedtime.count()<< " s" << std::endl;
+    std::cout<<"throughput: "<<flops<< " flops" <<std::endl;
 }
