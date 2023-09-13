@@ -239,7 +239,7 @@ matmul_ref()
 {
 	for (int i = 0; i < SIZE; i++)
 		for (int j = 0; j < SIZE; j++)
-                        for (int k = 0; k < SIZE; k++)
+			for (int k = 0; k < SIZE; k++)
 				mat_ref[MINDEX(i, k)] += mat_a[MINDEX(i, j)] * mat_b[MINDEX(j, k)];
 }
 
@@ -250,15 +250,14 @@ static int
 verify_result()
 {
         float e_sum;
-        int i;
-
         e_sum = 0;
-        for (i = 0; i < SIZE; i++) 
-                for (j = 0; j< SIZE; j++){
-                        e_sum += mat_c[MINDEX(i, j)] < mat_ref[MINDEX(i, j)] ?
-                                mat_ref[MINDEX(i, j)] - mat_c[MINDEX(i, j)] :
-                                mat_c[MINDEX(i, j)] - mat_ref[MINDEX(i, j)];
-                }
+        for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j< SIZE; j++){
+				e_sum += mat_c[MINDEX(i, j)] < mat_ref[MINDEX(i, j)] ?
+						mat_ref[MINDEX(i, j)] - mat_c[MINDEX(i, j)] :
+						mat_c[MINDEX(i, j)] - mat_ref[MINDEX(i, j)];
+			}
+		}
 
         printf("e_sum: %.e\n", e_sum);
 
@@ -274,8 +273,6 @@ verify_result()
 static void
 init()
 {
-        int i, j;
-
         mat_a = (float *)_mm_malloc(sizeof(*mat_a) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
         mat_b = (float *)_mm_malloc(sizeof(*mat_b) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
         mat_c = (float *)_mm_malloc(sizeof(*mat_c) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
@@ -286,10 +283,11 @@ init()
                 abort();
         }
 
-        for (i = 0; i < SIZE; i++) {
-                for (j = 0; j < SIZE; j++)
-                        mat_a[MINDEX(i, j)] = ((7 * i + j) & 0x0F) * 0x1P-2F;
-                        mat_b[MINDEX(i, j)] = ((7 * i + j) & 0x0F) * 0x1P-2F;
+        for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++){
+					mat_a[MINDEX(i, j)] = ((7 * i + j) & 0x0F) * 0x1P-2F;
+					mat_b[MINDEX(i, j)] = ((7 * i + j) & 0x0F) * 0x1P-2F;
+				}
         }
 
         memset(mat_c, 0, sizeof(mat_c));
