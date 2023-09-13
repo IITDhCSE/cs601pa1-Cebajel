@@ -13,17 +13,6 @@ input=2048
 
 all: matmul_schedule matmul_optlevel matmul_blas matvec
 
-$(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
-	$@
-
-$(BIN)/matvec.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $(CFLAGS) $<
-
-$(SRC)/timeutil.cpp: $(INC)/timeutil.h
-
-$(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
-	$(CC) -c -o $@ -I$(INC) $<
 
 # 1(a) Balaji
 matmul_schedule: $(BIN) $(BIN)/matmul_ijk $(BIN)/matmul_ikj $(BIN)/matmul_kij $(BIN)/matmul_kji $(BIN)/matmul_jik $(BIN)/matmul_jki
@@ -86,6 +75,18 @@ $(BIN)/matmul_b: $(SRC)/matmul.cpp
 
 # 2 Cebajel
 matvec: $(OBJ)/matvec
+
+$(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$@
+
+$(BIN)/matvec.o: $(SRC)/matvec.cpp
+	$(CC) -c -o $@ $(CFLAGS) $<
+
+$(SRC)/timeutil.cpp: $(INC)/timeutil.h
+
+$(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
+	$(CC) -c -o $@ -I$(INC) $<
 
 clean:
 	$(RM) $(BIN)/*.o matvec
