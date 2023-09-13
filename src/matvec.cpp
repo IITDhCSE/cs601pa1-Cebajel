@@ -153,7 +153,7 @@ run_multiply()
         printf("Matvec reference code completed in %.2f s\n",
                runtime_ref);
 
-        printf("Speedup: %.2f\n",
+        printf("Speedup: %5.4e\n",
                runtime_ref / runtime_sse);
 
 
