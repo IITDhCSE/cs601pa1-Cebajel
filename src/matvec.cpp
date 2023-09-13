@@ -313,11 +313,8 @@ run_multiply()
 		double computation_cost = 2.0*SIZE*SIZE*SIZE - 1.0*SIZE*SIZE;
 		double flops = static_cast<double>(computation_cost / runtime_sse);
 		printf("Throughtput: %5.4e flops\n", flops);
-		printf("Before");
-
         get_time_now(&ts_start);
 		matmul_ref();
-		printf("After");
         get_time_now(&ts_stop);
         runtime_ref = get_time_diff(&ts_start, &ts_stop);
         printf("Matmul reference code completed in %.2f s\n",
