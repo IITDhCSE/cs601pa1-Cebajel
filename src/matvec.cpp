@@ -278,7 +278,7 @@ init()
         mat_a = (float *)_mm_malloc(sizeof(*mat_a) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
         mat_b = (float *)_mm_malloc(sizeof(*mat_b) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
         mat_c = (float *)_mm_malloc(sizeof(*mat_c) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
-        mat_ref = (float *)_mm_malloc(sizeof(*mat_ref) * SIZE, XMM_ALIGNMENT_BYTES);
+        mat_ref = (float *)_mm_malloc(sizeof(*mat_ref) * SIZE * SIZE, XMM_ALIGNMENT_BYTES);
 
         if (!mat_a || !mat_b || !mat_c || !mat_ref) {
                 fprintf(stderr, "Memory allocation failed\n");
@@ -313,9 +313,9 @@ run_multiply()
 		double computation_cost = 2.0*SIZE*SIZE*SIZE - 1.0*SIZE*SIZE;
 		double flops = static_cast<double>(computation_cost / runtime_sse);
 		printf("Throughtput: %5.4e flops\n", flops);
+		printf("Before");
 
         get_time_now(&ts_start);
-		printf("Before");
 		matmul_ref();
 		printf("After");
         get_time_now(&ts_stop);
