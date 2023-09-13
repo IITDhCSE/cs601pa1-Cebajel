@@ -89,7 +89,6 @@ $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 	$(CC) -c -o $@ -I$(INC) $<
 
 # 3 Cebajel
-
 matvec_matmul: $(OBJ)/matvec_matmul
 
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
