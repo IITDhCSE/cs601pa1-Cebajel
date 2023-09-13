@@ -11,9 +11,11 @@ LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
 
-matvec: $(OBJ)/matvec
 
-all: $(OBJ)/matvec matmul_schedule matmul_optlevel matmul_blas
+all: matmul_schedule matmul_optlevel matmul_blas matvec
+
+# 2 Cebajel
+matvec: $(OBJ)/matvec
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
