@@ -215,11 +215,11 @@ matmul_intrinsics()
         #endif
 
         for (int i = 0; i < SIZE; i++){
-			for (int k = 0; k < SIZE; k += 4){
+			for (int k = 0; k < SIZE; k++){
 			__m128 result = _mm_setzero_ps();
 				for (int j = 0; j < SIZE; j += 4){
 					__m128 resistor1 = _mm_load_ps( &mat_a[MINDEX(i, j)] );
-					__m128 resistor2 = _mm_load_ps( &mat_b[MINDEX(j, k)] );
+					__m128 resistor2 = _mm_load_ps( &mat_b[MINDEX(k, j)] ); // mat_b is column major
 					__m128 temp = _mm_mul_ps(resistor1, resistor2);
 					result = _mm_hadd_ps(result, temp);
 				}
@@ -236,13 +236,14 @@ matmul_intrinsics()
 /**
  * Reference implementation of the matmul used to verify the answer. Do NOT touch this function.
  */
+// mat_b is column major
 static void
 matmul_ref()
 {
 	for (int i = 0; i < SIZE; i++)
 		for (int j = 0; j < SIZE; j++)
 			for (int k = 0; k < SIZE; k++)
-				mat_ref[MINDEX(i, k)] += mat_a[MINDEX(i, j)] * mat_b[MINDEX(j, k)];
+				mat_ref[MINDEX(i, k)] += mat_a[MINDEX(i, j)] * mat_b[MINDEX(k, j)];
 }
 
 /**
