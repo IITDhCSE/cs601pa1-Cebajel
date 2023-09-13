@@ -92,7 +92,7 @@ $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 matvec_matmul: $(OBJ)/matvec_matmul
 
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CC) -O3 $(LDFLAGS) -o $@ $^ $(LIBS)
 	$@
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
