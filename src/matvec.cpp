@@ -144,7 +144,7 @@ run_multiply()
 
 		double computation_cost = 2.0*SIZE*SIZE;
 		double flops = static_cast<double>(computation_cost / runtime_sse);
-		printf("Throughtput: %.2f s\n", flops);
+		printf("Throughtput: %.2f flops\n", flops);
 
         get_time_now(&ts_start);
 	matvec_ref();
