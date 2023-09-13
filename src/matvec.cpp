@@ -315,7 +315,9 @@ run_multiply()
 		printf("Throughtput: %5.4e flops\n", flops);
 
         get_time_now(&ts_start);
-	matmul_ref();
+		printf("Before");
+		matmul_ref();
+		printf("After");
         get_time_now(&ts_stop);
         runtime_ref = get_time_diff(&ts_start, &ts_stop);
         printf("Matmul reference code completed in %.2f s\n",
