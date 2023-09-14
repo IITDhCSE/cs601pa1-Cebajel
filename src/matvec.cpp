@@ -63,13 +63,8 @@ matvec_intrinsics()
             __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
             __m512 resistor2 = _mm512_load_ps(&vec_b[j]);
             __m512 temp = _mm512_mul_ps(resistor1, resistor2);
-            // result = _mm512_hadd_ps(result, temp);
             result = _mm512_add_ps(result, temp);
         }
-        // __m512 zero = _mm512_setzero_ps();
-        // result = _mm512_hadd_ps(result, zero);
-        // result = _mm512_hadd_ps(result, zero);
-        // vec_c[i] = _mm512_cvtss_f32(result);
         vec_c[i] = _mm512_reduce_add_ps(result);
     }
 
@@ -149,14 +144,12 @@ run_multiply()
     double runtime_ref, runtime_sse;
 
     get_time_now(&ts_start);
-    /* vec_c = mat_a * vec_b */
     matvec_intrinsics();
     get_time_now(&ts_stop);
     runtime_sse = get_time_diff(&ts_start, &ts_stop);
     printf("Matvec using intrinsics completed in %.2f s\n",
            runtime_sse);
 
-    // double computation_cost = 2.0 * SIZE * SIZE + 8.0 * SIZE;
     double computation_cost = 2.0 * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
@@ -234,10 +227,6 @@ matmul_intrinsics()
                 __m512 temp = _mm512_mul_ps(resistor1, resistor2);
                 result = _mm512_add_ps(result, temp);
             }
-            // __m512 zero = _mm512_setzero_ps();
-            // result = _mm512_hadd_ps(result, zero);
-            // result = _mm512_hadd_ps(result, zero);
-            // mat_c[MINDEX(i, k)] = _mm512_cvtss_f32(result);
             mat_c[MINDEX(i, k)] = _mm512_reduce_add_ps(result);
         }
     }
@@ -319,14 +308,12 @@ run_multiply()
     double runtime_ref, runtime_sse;
 
     get_time_now(&ts_start);
-    /* mul_c = mat_a * mul_b */
     matmul_intrinsics();
     get_time_now(&ts_stop);
     runtime_sse = get_time_diff(&ts_start, &ts_stop);
     printf("Matmul using intrinsics completed in %.2f s\n",
            runtime_sse);
 
-    // double computation_cost = 2.0 * SIZE * SIZE * SIZE + 8.0 * SIZE * SIZE;
     double computation_cost = 2.0 * SIZE * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
