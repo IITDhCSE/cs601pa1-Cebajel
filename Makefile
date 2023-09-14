@@ -96,7 +96,7 @@ $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
 	$@
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $(CFLAGS) -D MATMUL -D SIZE2=$(N) -D PARALLEL $^
+	$(CC) -c -o $@ $(CFLAGS) -D MATMUL -D SIZE2=$(N) -DPARALLEL $^
 
 clean:
 	$(RM) $(BIN)/*

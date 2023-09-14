@@ -120,8 +120,8 @@ C[i * n + j] = C[i * n + j] + A[i * n + k] * B[k * n + j];
 #if BLAS == 1
 for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
-            C[i] = C[i] + cblas_ddot(n,(double*)A,1,(double*)B,n);
-    std::cout<<"Using cblas_ddot function:"<<std::endl;
+            C[i] = C[i] + cblas_sdot(n,A,1,B,n);
+    std::cout<<"Using cblas_sdot function:"<<std::endl;
 #else
     cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,n,B,n,1,C,n);
     std::cout<<"Using sgemm function:"<<std::endl;
