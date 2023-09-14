@@ -217,6 +217,7 @@ matmul_intrinsics()
  * multiplication here.
  */
 #ifdef PARALLEL
+#pragma omp parallel
 #pragma omp parallel for
 #endif
 
