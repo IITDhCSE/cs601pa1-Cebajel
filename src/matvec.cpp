@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <omp.h>
 
 // #include <pmmintrin.h>
 #include <immintrin.h>
@@ -51,6 +52,8 @@ matvec_intrinsics()
     /* Implement your SSE version of the matrix-vector
      * multiplication here.
      */
+
+    #pragma omp parallel for
     for (int i = 0; i < SIZE; i++)
     {
         __m512 result = _mm512_setzero_ps();
@@ -216,11 +219,8 @@ matmul_intrinsics()
 /* Implement your SSE version of the matrix-vector
  * multiplication here.
  */
-#ifdef PARALLEL
-#pragma omp parallel
-#pragma omp parallel for
-#endif
 
+#pragma omp parallel for
     for (int i = 0; i < SIZE; i++)
     {
         for (int k = 0; k < SIZE; k++)
