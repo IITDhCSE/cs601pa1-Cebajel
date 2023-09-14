@@ -55,7 +55,13 @@ int main(int argc, char *argv[])
         for (int j = 0; j < n; j++)
         {
             A[i][j] = std::rand() / (float)(RAND_MAX);
+            #ifdef BLAS
+            #if BLAS=1
+            B[j][i] = std::rand() / (float)(RAND_MAX);
+            #endif
+            #else
             B[i][j] = std::rand() / (float)(RAND_MAX);
+            #endif
             C[i][j] = 0;
         }
     }
@@ -142,7 +148,7 @@ C[i * n + j] = C[i * n + j] + A[i * n + k] * B[k * n + j];
 #if BLAS == 1
 for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
-            C[i] = C[i] + cblas_sdot(n,A,1,B,n);
+            C[i] = C[i] + cblas_sdot(n,A,1,B,1);
     std::cout<<"Using cblas_sdot function:"<<std::endl;
 #else
     cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,n,B,n,1,C,n);
