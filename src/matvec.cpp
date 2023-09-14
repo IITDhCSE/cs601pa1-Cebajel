@@ -32,7 +32,7 @@ matvec_intrinsics()
 {
     /* Assume that the data size is an even multiple of the 128 bit
      * SSE vectors (i.e. 4 floats) */
-    assert(!(SIZE & 0x3));
+    assert(!(SIZE & 0xf));
 
     /* HINT: Read the documentation about the following. You might find at least the following instructions
      * useful:
@@ -51,18 +51,19 @@ matvec_intrinsics()
      */
     for (int i = 0; i < SIZE; i++)
     {
-        __m128 result = _mm_setzero_ps();
-        for (int j = 0; j < SIZE; j += 4)
+        __m512 result = _mm_setzero_ps();
+        for (int j = 0; j < SIZE; j += 16)
         {
-            __m128 resistor1 = _mm_load_ps(&mat_a[MINDEX(i, j)]);
-            __m128 resistor2 = _mm_load_ps(&vec_b[j]);
-            __m128 temp = _mm_mul_ps(resistor1, resistor2);
-            result = _mm_hadd_ps(result, temp);
+            __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
+            __m512 resistor2 = _mm512_load_ps(&vec_b[j]);
+            __m512 temp = _mm512_mul_ps(resistor1, resistor2);
+            result = _mm512_hadd_ps(result, temp);
         }
-        __m128 zero = _mm_setzero_ps();
-        result = _mm_hadd_ps(result, zero);
-        result = _mm_hadd_ps(result, zero);
-        vec_c[i] = _mm_cvtss_f32(result);
+        // __m512 zero = _mm512_setzero_ps();
+        // result = _mm512_hadd_ps(result, zero);
+        // result = _mm512_hadd_ps(result, zero);
+        // vec_c[i] = _mm512_cvtss_f32(result);
+        vec_c[i] = _mm512_reduce_add_ps(result);
     }
 
     return;
@@ -194,7 +195,7 @@ matmul_intrinsics()
 {
     /* Assume that the data size is an even multiple of the 128 bit
      * SSE vectors (i.e. 4 floats) */
-    assert(!(SIZE & 0x3));
+    assert(!(SIZE & 0xf));
 
 /* HINT: Read the documentation about the following. You might find at least the following instructions
  * useful:
@@ -219,18 +220,19 @@ matmul_intrinsics()
     {
         for (int k = 0; k < SIZE; k++)
         {
-            __m128 result = _mm_setzero_ps();
-            for (int j = 0; j < SIZE; j += 4)
+            __m512 result = _mm512_setzero_ps();
+            for (int j = 0; j < SIZE; j += 16)
             {
-                __m128 resistor1 = _mm_load_ps(&mat_a[MINDEX(i, j)]);
-                __m128 resistor2 = _mm_load_ps(&mat_b[MINDEX(k, j)]); // mat_b is column major
-                __m128 temp = _mm_mul_ps(resistor1, resistor2);
-                result = _mm_hadd_ps(result, temp);
+                __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
+                __m512 resistor2 = _mm512_load_ps(&mat_b[MINDEX(k, j)]); // mat_b is column major
+                __m512 temp = _mm512_mul_ps(resistor1, resistor2);
+                result = _mm512_hadd_ps(result, temp);
             }
-            __m128 zero = _mm_setzero_ps();
-            result = _mm_hadd_ps(result, zero);
-            result = _mm_hadd_ps(result, zero);
-            mat_c[MINDEX(i, k)] = _mm_cvtss_f32(result);
+            // __m512 zero = _mm512_setzero_ps();
+            // result = _mm512_hadd_ps(result, zero);
+            // result = _mm512_hadd_ps(result, zero);
+            // mat_c[MINDEX(i, k)] = _mm512_cvtss_f32(result);
+            mat_c[MINDEX(i, k)] = _mm512_reduce_add_ps(result);
         }
     }
 
