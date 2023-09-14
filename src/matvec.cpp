@@ -152,7 +152,8 @@ run_multiply()
     printf("Matvec using intrinsics completed in %.2f s\n",
            runtime_sse);
 
-    double computation_cost = 2.0 * SIZE * SIZE + 8.0 * SIZE;
+    // double computation_cost = 2.0 * SIZE * SIZE + 8.0 * SIZE;
+    double computation_cost = 2.0 * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
 
@@ -323,7 +324,8 @@ run_multiply()
     printf("Matmul using intrinsics completed in %.2f s\n",
            runtime_sse);
 
-    double computation_cost = 2.0 * SIZE * SIZE * SIZE + 8.0 * SIZE * SIZE;
+    // double computation_cost = 2.0 * SIZE * SIZE * SIZE + 8.0 * SIZE * SIZE;
+    double computation_cost = 2.0 * SIZE * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
     get_time_now(&ts_start);
