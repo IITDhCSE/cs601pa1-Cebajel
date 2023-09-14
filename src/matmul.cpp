@@ -14,6 +14,26 @@
 #ifdef STACKALLOCATED
 #define INPUTSIZE 256
 #endif
+
+static int
+verify_result( int n, float *C_ref, float *C)
+{
+    float e_sum;
+    e_sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            e_sum += C[i*n + j] < C_ref[i*n + j] ? C_ref[i*n + j] - C[i*n + j] : C[i*n + j] - C_ref[i*n + j];
+        }
+    }
+
+    printf("e_sum: %.e\n", e_sum);
+
+    return e_sum < 1E-6;
+}
+
+
 int main(int argc, char *argv[])
 {
     int n;
@@ -25,6 +45,7 @@ int main(int argc, char *argv[])
     float *A = new float[n * n];
     float *B = new float[n * n];
     float *C = new float[n * n];
+    float *C_ref = new float[n * n];
 #endif
 
     std::srand(std::time(NULL));
@@ -47,6 +68,7 @@ int main(int argc, char *argv[])
             A[i * n + j] = std::rand() / (float)(RAND_MAX);
             B[i * n + j] = std::rand() / (float)(RAND_MAX);
             C[i * n + j] = 0;
+            C_ref[i * n + j] = 0;
         }
     }
 #endif
@@ -135,4 +157,14 @@ for(int i=0; i<n; i++)
     double flops = static_cast<double>(computation_cost / elapsedtime.count());
     std::cout << "elapsed seconds: " << elapsedtime.count()<< " s" << std::endl;
     std::cout<<"throughput: "<<flops<< " flops" <<std::endl;
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            for (int k = 0; k < n; k++)
+                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[k * n + j];
+
+    if (verify_result(n, C_ref, C))
+        printf("Result OK\n");
+    else
+        printf("Result MISMATCH\n");
 }
