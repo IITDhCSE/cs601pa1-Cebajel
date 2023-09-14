@@ -75,10 +75,10 @@ $(BIN)/matmul_b: $(SRC)/matmul.cpp
 
 # 2 Cebajel
 matvec: $(OBJ)/matvec
+	$^
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
-	$@
 
 $(BIN)/matvec.o: $(SRC)/matvec.cpp
 	$(CC) -c -o $@ $(CFLAGS) $<
@@ -90,10 +90,10 @@ $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 
 # 3 Cebajel
 matvec_matmul: $(OBJ)/matvec_matmul
+	$^
 
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
 	$(CC) -O3 $(LDFLAGS) -o $@ $^ $(LIBS)
-	$@
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
 	$(CC) -c -o $@ $(CFLAGS) -D MATMUL -D SIZE2=$(N) -DPARALLEL $^
