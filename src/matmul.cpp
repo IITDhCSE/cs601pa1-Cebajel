@@ -148,7 +148,7 @@ C[i * n + j] = C[i * n + j] + A[i * n + k] * B[k * n + j];
 #if BLAS == 1
 for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
-            C[i*n+j] += cblas_sdot(n,A[i*n],1,B[j*n],1);
+            C[i*n+j] += cblas_sdot(n,&A[i*n],1,&B[j*n],1);
     std::cout<<"Using cblas_sdot function:"<<std::endl;
 #else
     cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,n,B,n,1,C,n);
