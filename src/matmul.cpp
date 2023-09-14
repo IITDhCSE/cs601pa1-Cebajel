@@ -30,7 +30,7 @@ verify_result( int n, float *C_ref, float *C)
 
     printf("e_sum: %.e\n", e_sum);
 
-    return e_sum < 1E-4;
+    return e_sum < 1E-6;
 }
 
 
