@@ -51,13 +51,14 @@ matvec_intrinsics()
      */
     for (int i = 0; i < SIZE; i++)
     {
-        __m512 result = _mm_setzero_ps();
+        __m512 result = _mm512_setzero_ps();
         for (int j = 0; j < SIZE; j += 16)
         {
             __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
             __m512 resistor2 = _mm512_load_ps(&vec_b[j]);
             __m512 temp = _mm512_mul_ps(resistor1, resistor2);
-            result = _mm512_hadd_ps(result, temp);
+            // result = _mm512_hadd_ps(result, temp);
+            result = _mm512_add_ps(result, temp);
         }
         // __m512 zero = _mm512_setzero_ps();
         // result = _mm512_hadd_ps(result, zero);
@@ -226,7 +227,7 @@ matmul_intrinsics()
                 __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
                 __m512 resistor2 = _mm512_load_ps(&mat_b[MINDEX(k, j)]); // mat_b is column major
                 __m512 temp = _mm512_mul_ps(resistor1, resistor2);
-                result = _mm512_hadd_ps(result, temp);
+                result = _mm512_add_ps(result, temp);
             }
             // __m512 zero = _mm512_setzero_ps();
             // result = _mm512_hadd_ps(result, zero);
