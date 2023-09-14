@@ -145,7 +145,7 @@ for(int i=0; i<n; i++)
             C[i] = C[i] + cblas_sdot(n,A,1,B,n);
     std::cout<<"Using cblas_sdot function:"<<std::endl;
 #else
-    cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,1,B,n,1,C,1);
+    cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,1,B,1,1,C,1);
     std::cout<<"Using sgemm function:"<<std::endl;
 #endif
 #endif
