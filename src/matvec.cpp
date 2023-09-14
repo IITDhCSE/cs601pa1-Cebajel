@@ -20,7 +20,8 @@
 
 #define MINDEX(n, m) (((n) << SIZE2) | (m))
 
-#define XMM_ALIGNMENT_BYTES 16
+// #define XMM_ALIGNMENT_BYTES 16
+#define XMM_ALIGNMENT_BYTES 64
 
 static float *mat_a __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
 #ifndef MATMUL
