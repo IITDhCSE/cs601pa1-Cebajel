@@ -96,7 +96,7 @@ $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) -o $@ $^ $(MY_ARGS) $(LDFLAGS) $(LIBS)
 
 $(BIN)/matvec.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $< $(CFLAGS) $(MY_ARGS) -fopenmp 
+	$(CC) -c -o $@ $< $(CFLAGS) $(MY_ARGS) -fopenmp -lgomp
 
 $(SRC)/timeutil.cpp: $(INC)/timeutil.h
 
@@ -112,7 +112,7 @@ $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
 	$(CC) -o $@ $^ $(LIBS) $(MY_ARGS) -O3 $(LDFLAGS)
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $^ $(CFLAGS) $(MY_ARGS) -D MATMUL -D SIZE2=$(N) -fopenmp
+	$(CC) -c -o $@ $^ $(CFLAGS) $(MY_ARGS) -D MATMUL -D SIZE2=$(N) -fopenmp -lgomp
 
 clean:
 	$(RM) $(BIN)/*
