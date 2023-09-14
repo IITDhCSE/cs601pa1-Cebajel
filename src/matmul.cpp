@@ -167,7 +167,15 @@ for(int i=0; i<n; i++)
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             for (int k = 0; k < n; k++)
+            #ifdef BLAS
+            #if BLAS = 1
+                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[j * n + k];
+            #else
                 C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[k * n + j];
+            #endif
+            #else
+                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[k * n + j];
+            #endif
 
     if (verify_result(n, C_ref, C))
         printf("Result OK\n");
