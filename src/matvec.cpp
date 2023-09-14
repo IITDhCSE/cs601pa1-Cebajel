@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include <omp.h>
+#include <iostream>
+// #include <omp.h>
 
 // #include <pmmintrin.h>
 #include <immintrin.h>
