@@ -93,7 +93,7 @@ matvec: $(OBJ)/matvec
 	echo ""
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
-	$(CC) -o $@ $^ $(MY_ARGS) $(LDFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(MY_ARGS) $(LDFLAGS) $(LIBS) -fopenmp -lgomp
 
 $(BIN)/matvec.o: $(SRC)/matvec.cpp
 	$(CC) -c -o $@ $< $(CFLAGS) $(MY_ARGS) -fopenmp -lgomp
@@ -109,7 +109,7 @@ matvec_matmul: $(OBJ)/matvec_matmul
 	echo ""
 
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
-	$(CC) -o $@ $^ $(LIBS) $(MY_ARGS) -O3 $(LDFLAGS)
+	$(CC) -o $@ $^ $(LIBS) $(MY_ARGS) -O3 $(LDFLAGS) -fopenmp -lgomp
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
 	$(CC) -c -o $@ $^ $(CFLAGS) $(MY_ARGS) -D MATMUL -D SIZE2=$(N) -fopenmp -lgomp
