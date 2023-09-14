@@ -3,7 +3,8 @@
 #include <string.h>
 #include <assert.h>
 
-#include <pmmintrin.h>
+// #include <pmmintrin.h>
+#include <immintrin.h>
 
 #ifndef __SSE3__
 #error This example requires SSE3

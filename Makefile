@@ -5,8 +5,9 @@ BIN=./bin
 INC=./inc
 OBJ=./obj
 CC=g++
+MY_ARGS=-march=native
 ARCH=-m64 $(SSE_ARCH_FLAGS)
-CFLAGS= -O2 $(ARCH) -g -Wall
+CFLAGS= -O3 $(ARCH) -g -Wall
 LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
@@ -92,15 +93,15 @@ matvec: $(OBJ)/matvec
 	echo ""
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(MY_ARGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(BIN)/matvec.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $(CFLAGS) $<
+	$(CC) $(MY_ARGS) -c -o $@ $(CFLAGS) $<
 
 $(SRC)/timeutil.cpp: $(INC)/timeutil.h
 
 $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
-	$(CC) -c -o $@ -I$(INC) $<
+	$(CC) $(MY_ARGS) -c -o $@ -I$(INC) $<
 
 # 3 Cebajel
 matvec_matmul: $(OBJ)/matvec_matmul
@@ -108,10 +109,10 @@ matvec_matmul: $(OBJ)/matvec_matmul
 	echo ""
 
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
-	$(CC) -O3 $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(MY_ARGS) -O3 $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
-	$(CC) -c -o $@ $(CFLAGS) -D MATMUL -D SIZE2=$(N) -DPARALLEL $^
+	$(CC) $(MY_ARGS) -c -o $@ $(CFLAGS) -D MATMUL -D SIZE2=$(N) -DPARALLEL $^
 
 clean:
 	$(RM) $(BIN)/*
