@@ -26,7 +26,7 @@ verify_result( int n, float *C_ref, float *C)
         {
             e_max = max(abs(C[i*n + j] - C_ref[i*n + j]), e_max);
         }
-    }
+    }a
 
     printf("e_max: %.e\n", e_sum);
 
