@@ -177,12 +177,12 @@ for(int i=0; i<n; i++)
             for (int k = 0; k < n; k++)
             #ifdef BLAS
             #if BLAS == 1
-                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[j * n + k];
+                C_ref[i * n + k] += A[i * n + j] * B[k * n + j];
             #else
-                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[k * n + j];
+                C_ref[i * n + k] += A[i * n + j] * B[j * n + k];
             #endif
             #else
-                C_ref[i * n + j] = C_ref[i * n + j] + A[i * n + k] * B[k * n + j];
+                C_ref[i * n + k] += A[i * n + j] * B[j * n + k];
             #endif
 
     if (verify_result(n, C_ref, C))
