@@ -340,7 +340,7 @@ run_multiply()
            runtime_sse);
 
     /*
-        Computation cost for matrix matrix multiplication is 2N^2. Throguput = <Computation Cost> / <Time Taken>
+        Computation cost for matrix matrix multiplication is 2N^3. Throguput = <Computation Cost> / <Time Taken>
     */
     double computation_cost = 2.0 * SIZE * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
