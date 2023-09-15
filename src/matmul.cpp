@@ -30,7 +30,11 @@ verify_result( int n, float *C_ref, float *C)
 
     printf("e_sum: %.e\n", e_sum);
 
-    return e_sum < 1E-2;
+    #ifdef BLAS
+    return e_sum < 1E-2*n*n;
+    #else
+    return e_sum < 1E-6;
+    #endif
 }
 
 
@@ -56,8 +60,10 @@ int main(int argc, char *argv[])
         {
             A[i][j] = std::rand() / (float)(RAND_MAX);
             #ifdef BLAS
-            #if BLAS=1
+            #if BLAS == 1
             B[j][i] = std::rand() / (float)(RAND_MAX);
+            #else
+            B[i][j] = std::rand() / (float)(RAND_MAX);
             #endif
             #else
             B[i][j] = std::rand() / (float)(RAND_MAX);
@@ -156,7 +162,7 @@ C[i * n + j] = C[i * n + j] + A[i * n + k] * B[k * n + j];
 #if BLAS == 1
 for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
-            C[i*n+j] += cblas_sdot(n,&A[i*n],1,&B[j*n],1);
+            C[i*n+j] = cblas_sdot(n,&A[i*n],1,&B[j*n],1);
     std::cout<<"Using cblas_sdot function:"<<std::endl;
 #else
     cblas_sgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,n,n,n,1,A,n,B,n,1,C,n);
