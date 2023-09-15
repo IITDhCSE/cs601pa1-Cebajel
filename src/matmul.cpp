@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
                 B[i][j] = std::rand() / (float)(RAND_MAX);
             #endif
             C[i][j] = 0;
+            C_ref[i * n + j] = 0;
         }
     }
 
