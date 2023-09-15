@@ -13,7 +13,13 @@ LIBS=-lrt
 input=2048
 N=11
 
-all: matmul_schedule matmul_optlevel matmul_blas matvec matvec_matmul
+all: matmul_schedule matmul_optlevel matmul_blas matvec matvec_matmul $(BIN) $(OBJ)
+
+$(BIN):
+	mkdir bin
+
+$(OBJ):
+	mkdir obj
 
 # 1(a) Balaji
 matmul_schedule: $(BIN) $(BIN)/matmul_ijk $(BIN)/matmul_ikj $(BIN)/matmul_kij $(BIN)/matmul_kji $(BIN)/matmul_jik $(BIN)/matmul_jki
@@ -30,8 +36,6 @@ matmul_schedule: $(BIN) $(BIN)/matmul_ijk $(BIN)/matmul_ikj $(BIN)/matmul_kij $(
 	$(BIN)/matmul_jki $(input)
 	echo ""
 
-$(BIN):
-	mkdir bin
 
 $(BIN)/matmul_ijk: $(SRC)/matmul.cpp
 	$(CC) -o $@ $^ -D PARALLEL -D LOOPINTERCHANGE=0
@@ -75,7 +79,7 @@ $(BIN)/matmul_o4: $(SRC)/matmul.cpp
 	$(CC) $^ -o $@ -D PARALLEL -D LOOPINTERCHANGE=0 -O4
 
 # 1(c) Aditya
-matmul_blas: $(BIN) $(BIN)/matmul_a $(BIN)/matmul_b
+matmul_blas: $(BIN)/matmul_a $(BIN)/matmul_b $(BIN)
 	$(BIN)/matmul_a $(input)
 	echo ""
 	$(BIN)/matmul_b $(input)
@@ -88,8 +92,8 @@ $(BIN)/matmul_b: $(SRC)/matmul.cpp
 	$(CC) $^ -o $@ $(blaspath) -DBLAS=2 -D PARALLEL $(MY_ARGS)
 
 # 2 Cebajel
-matvec: $(OBJ) $(OBJ)/matvec
-	$>
+matvec: $(OBJ)/matvec $(OBJ) $(BIN)
+	$^
 	echo ""
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
@@ -104,14 +108,11 @@ $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 	$(CC) -c -o $@ $< -I$(INC) $(MY_ARGS)
 
 # 3 Cebajel
-matvec_matmul: $(OBJ) $(OBJ)/matvec_matmul
+matvec_matmul: $(OBJ)/matvec_matmul $(OBJ) $(BIN)
 	$^
 	echo ""
 
-$(OBJ):
-	mkdir obj
-
-$(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
+$(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o $(BIN)
 	$(CC) -o $@ $^ $(LIBS) $(MY_ARGS) -O3 $(LDFLAGS) -fopenmp -lgomp
 
 $(BIN)/matvec_matmul.o: $(SRC)/matvec.cpp
