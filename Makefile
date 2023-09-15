@@ -89,11 +89,8 @@ $(BIN)/matmul_b: $(SRC)/matmul.cpp
 
 # 2 Cebajel
 matvec: $(OBJ) $(OBJ)/matvec
-	$^
+	$>
 	echo ""
-
-$(OBJ):
-	mkdir obj
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) -o $@ $^ $(MY_ARGS) $(LDFLAGS) $(LIBS) -fopenmp -lgomp
