@@ -60,9 +60,9 @@ matvec_intrinsics()
         __m512 result = _mm512_setzero_ps();
         for (int j = 0; j < SIZE; j += 16)
         {
-            __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
-            __m512 resistor2 = _mm512_load_ps(&vec_b[j]);
-            __m512 temp = _mm512_mul_ps(resistor1, resistor2);
+            __m512 register1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
+            __m512 register2 = _mm512_load_ps(&vec_b[j]);
+            __m512 temp = _mm512_mul_ps(register1, register2);
             result = _mm512_add_ps(result, temp);
         }
         vec_c[i] = _mm512_reduce_add_ps(result);
@@ -222,9 +222,9 @@ matmul_intrinsics()
             __m512 result = _mm512_setzero_ps();
             for (int j = 0; j < SIZE; j += 16)
             {
-                __m512 resistor1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
-                __m512 resistor2 = _mm512_load_ps(&mat_b[MINDEX(k, j)]); // mat_b is column major
-                __m512 temp = _mm512_mul_ps(resistor1, resistor2);
+                __m512 register1 = _mm512_load_ps(&mat_a[MINDEX(i, j)]);
+                __m512 register2 = _mm512_load_ps(&mat_b[MINDEX(k, j)]); // mat_b is column major
+                __m512 temp = _mm512_mul_ps(register1, register2);
                 result = _mm512_add_ps(result, temp);
             }
             mat_c[MINDEX(i, k)] = _mm512_reduce_add_ps(result);
