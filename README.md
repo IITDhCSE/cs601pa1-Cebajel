@@ -47,4 +47,4 @@ Clears all executable file formed. <br /><br /><br />
 
 And most important command;
 ```make enjoy!``` 
-Almost always compiles with zero exceptions and zero errors. :)
+Almost always compiles with zero exceptions and zero errors! :)

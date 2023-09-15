@@ -82,15 +82,18 @@ matmul_blas: $(BIN) $(BIN)/matmul_a $(BIN)/matmul_b
 	echo ""
 
 $(BIN)/matmul_a: $(SRC)/matmul.cpp
-	$(CC) $^ -o $@ $(blaspath) -DBLAS=1 -D PARALLEL
+	$(CC) $^ -o $@ $(blaspath) -DBLAS=1 -D PARALLEL $(MY_ARGS)
 
 $(BIN)/matmul_b: $(SRC)/matmul.cpp
-	$(CC) $^ -o $@ $(blaspath) -DBLAS=2 -D PARALLEL
+	$(CC) $^ -o $@ $(blaspath) -DBLAS=2 -D PARALLEL $(MY_ARGS)
 
 # 2 Cebajel
-matvec: $(OBJ)/matvec
+matvec: $(OBJ) $(OBJ)/matvec
 	$^
 	echo ""
+
+$(OBJ):
+	mkdir obj
 
 $(OBJ)/matvec: $(BIN)/matvec.o $(BIN)/timeutil.o
 	$(CC) -o $@ $^ $(MY_ARGS) $(LDFLAGS) $(LIBS) -fopenmp -lgomp
@@ -104,7 +107,7 @@ $(BIN)/timeutil.o: $(SRC)/timeutil.cpp $(INC)/timeutil.h
 	$(CC) -c -o $@ $< -I$(INC) $(MY_ARGS)
 
 # 3 Cebajel
-matvec_matmul: $(OBJ)/matvec_matmul
+matvec_matmul: $(OBJ) $(OBJ)/matvec_matmul
 	$^
 	echo ""
 
