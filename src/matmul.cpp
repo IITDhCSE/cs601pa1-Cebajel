@@ -72,7 +72,15 @@ int main(int argc, char *argv[])
         for (int j = 0; j < n; j++)
         {
             A[i * n + j] = std::rand() / (float)(RAND_MAX);
+            #ifdef BLAS
+            #if BLAS == 1
+            B[j * n + i] = std::rand() / (float)(RAND_MAX);
+            #else
             B[i * n + j] = std::rand() / (float)(RAND_MAX);
+            #endif
+            #else
+            B[i * n + j] = std::rand() / (float)(RAND_MAX);
+            #endif
             C[i * n + j] = 0;
             C_ref[i * n + j] = 0;
         }
