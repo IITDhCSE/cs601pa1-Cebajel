@@ -20,12 +20,25 @@
 #endif
 #define SIZE (1 << SIZE2)
 
+/* 
+    Defining a macro to compute index for a by passing row index and column index for a two dimensional matrix
+    stored in a single vector.
+*/
 #define MINDEX(n, m) (((n) << SIZE2) | (m))
 
 // #define XMM_ALIGNMENT_BYTES 16
+/*
+    64 bytes are required in alignment while allocating memory to a matrix to use __m512 register.
+    Similarly, 16 bytes are required in alignment in memory of matrix to use __m128 register.
+*/
 #define XMM_ALIGNMENT_BYTES 64
 
+/* Declaring a matrices along with their alignment bytes*/
 static float *mat_a __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
+/*
+    Macro matmul is used to determine whether to do matrix vector multiplication or matrix matrix multiplication.
+    If macro matmul is not defined then code will compute matrix vector multiplication else matrix matrix multiplication.
+*/
 #ifndef MATMUL
 static float *vec_b __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
 static float *vec_c __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
@@ -34,29 +47,24 @@ static float *vec_ref __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
 static void
 matvec_intrinsics()
 {
-    /* Assume that the data size is an even multiple of the 128 bit
-     * SSE vectors (i.e. 4 floats) */
+    /* Assume that the data size is an even multiple of the 512 bit
+     * SSE vectors (i.e. 16 floats) */
     assert(!(SIZE & 0xf));
 
-    /* HINT: Read the documentation about the following. You might find at least the following instructions
-     * useful:
-     *  - _mm_setzero_ps
-     *  - _mm_load_ps
-     *  - _mm_hadd_ps
-     *  - _mm_mul_ps
-     *  - _mm_cvtss_f32
-     *
-     * HINT: You can create the sum of all elements in a vector
-     * using two hadd instructions.
-     */
-
-    /* Implement your SSE version of the matrix-vector
-     * multiplication here.
-     */
-
+    /*
+        This macro parallelizes the immediate for loop.
+    */
     #pragma omp parallel for
     for (int i = 0; i < SIZE; i++)
     {
+        /*
+            __m512 is a class which stores 16 floats or 512 bits in a 512 bit register.
+            _mm512_setzero_ps() : returns __m512 object with all 512 bits as 0.
+            _mm512_load_ps(float*) : returns __m512 object with 512 bits equal to 512 bits stored in memory pointed by passed pointer.
+            _mm512_mul_ps(__m512, __m512) : returns __m512 object with 16 floats, each float is a product of corresponding
+                numbers passed in __m512 registers.
+            _mm512_reduce_add_ps(__m512) : returns a float which is sum of all 16 floats stored in passed __m512 object.
+        */
         __m512 result = _mm512_setzero_ps();
         for (int j = 0; j < SIZE; j += 16)
         {
@@ -150,6 +158,9 @@ run_multiply()
     printf("Matvec using intrinsics completed in %.2f s\n",
            runtime_sse);
 
+    /*
+        Computation cost for matrix matrix multiplication is 2N^2. Throguput = <Computation Cost> / <Time Taken>
+    */
     double computation_cost = 2.0 * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
@@ -194,8 +205,8 @@ static float *mat_ref __attribute__((aligned(XMM_ALIGNMENT_BYTES)));
 static void
 matmul_intrinsics()
 {
-    /* Assume that the data size is an even multiple of the 128 bit
-     * SSE vectors (i.e. 4 floats) */
+    /* Assume that the data size is an even multiple of the 512 bit
+     * SSE vectors (i.e. 16 floats) */
     assert(!(SIZE & 0xf));
 
 /* HINT: Read the documentation about the following. You might find at least the following instructions
@@ -214,11 +225,22 @@ matmul_intrinsics()
  * multiplication here.
  */
 
+/*
+    This macro parallelizes the immediate for loop.
+*/
 #pragma omp parallel for
     for (int i = 0; i < SIZE; i++)
     {
         for (int k = 0; k < SIZE; k++)
         {
+            /*
+                __m512 is a class which stores 16 floats or 512 bits in a 512 bit register.
+                _mm512_setzero_ps() : returns __m512 object with all 512 bits as 0.
+                _mm512_load_ps(float*) : returns __m512 object with 512 bits equal to 512 bits stored in memory pointed by passed pointer.
+                _mm512_mul_ps(__m512, __m512) : returns __m512 object with 16 floats, each float is a product of corresponding
+                    numbers passed in __m512 registers.
+                _mm512_reduce_add_ps(__m512) : returns a float which is sum of all 16 floats stored in passed __m512 object.
+            */
             __m512 result = _mm512_setzero_ps();
             for (int j = 0; j < SIZE; j += 16)
             {
@@ -237,7 +259,10 @@ matmul_intrinsics()
 /**
  * Reference implementation of the matmul used to verify the answer. Do NOT touch this function.
  */
-// mat_b is column major
+
+/*
+    Matrix B is stored in column major layout.
+*/
 static void
 matmul_ref()
 {
@@ -314,6 +339,9 @@ run_multiply()
     printf("Matmul using intrinsics completed in %.2f s\n",
            runtime_sse);
 
+    /*
+        Computation cost for matrix matrix multiplication is 2N^2. Throguput = <Computation Cost> / <Time Taken>
+    */
     double computation_cost = 2.0 * SIZE * SIZE * SIZE;
     double flops = static_cast<double>(computation_cost / runtime_sse);
     printf("Throughtput: %5.4e flops\n", flops);
