@@ -18,19 +18,19 @@
 static int
 verify_result( int n, float *C_ref, float *C)
 {
-    float e_sum;
-    e_sum = 0;
+    float e_max;
+    e_max = 0;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            e_sum += C[i*n + j] < C_ref[i*n + j] ? C_ref[i*n + j] - C[i*n + j] : C[i*n + j] - C_ref[i*n + j];
+            e_max = max(abs(C[i*n + j] - C_ref[i*n + j]), e_max);
         }
     }
 
-    printf("e_sum: %.e\n", e_sum);
+    printf("e_max: %.e\n", e_sum);
 
-    return e_sum < 1E-6;
+    return e_max < 1E-6;
 }
 
 
