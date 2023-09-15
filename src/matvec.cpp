@@ -269,7 +269,7 @@ matmul_ref()
     for (int i = 0; i < SIZE; i++)
         for (int j = 0; j < SIZE; j++)
             for (int k = 0; k < SIZE; k++)
-                mat_ref[MINDEX(i, k)] += mat_a[MINDEX(i, j)] * mat_b[MINDEX(k, j)];
+                mat_ref[MINDEX(i, j)] += mat_a[MINDEX(i, k)] * mat_b[MINDEX(j, k)];
 }
 
 /**
