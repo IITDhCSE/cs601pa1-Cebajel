@@ -111,6 +111,9 @@ matvec_matmul: $(OBJ) $(OBJ)/matvec_matmul
 	$^
 	echo ""
 
+$(OBJ):
+	mkdir obj
+
 $(OBJ)/matvec_matmul: $(BIN)/matvec_matmul.o $(BIN)/timeutil.o
 	$(CC) -o $@ $^ $(LIBS) $(MY_ARGS) -O3 $(LDFLAGS) -fopenmp -lgomp
 
