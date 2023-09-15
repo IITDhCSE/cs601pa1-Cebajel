@@ -29,7 +29,7 @@ verify_result( int n, float *C_ref, float *C)
         }
     }
 
-    printf("e_max: %.e\n", e_sum);
+    printf("e_max: %.e\n", e_max);
 
     return e_max < 1E-6;
 }
