@@ -7,7 +7,8 @@ OBJ=./obj
 CC=g++
 MY_ARGS=-march=native
 ARCH=-m64 $(SSE_ARCH_FLAGS)
-CFLAGS= -O3 $(ARCH) -g -Wall
+#  -Wall
+CFLAGS= -O3 $(ARCH) -g
 LDFLAGS=$(ARCH)
 LIBS=-lrt
 input=2048
